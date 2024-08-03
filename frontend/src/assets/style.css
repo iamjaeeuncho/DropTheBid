@@ -1,0 +1,99 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap'); */
+
+/* 구분선 */
+.line {
+    margin: 25px 0 25px 0;
+}
+
+/* 바디 컨테이너 */
+.container {
+    width: 100%;
+    height: auto;
+    max-width: 1000px;
+    font-size: 1rem;
+}
+
+/* 정렬 */
+.aligncenter {
+    text-align: center;
+}
+
+.alignright {
+    text-align: right;
+}
+
+.spacebetween {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 액션버튼 */
+.actionbutton {
+    border-radius: 25px;
+    background-color: black !important;
+    color: white !important;
+    box-shadow: none !important;
+    padding: 10px;
+}
+
+/* 대제목 - h1 사이즈와 두께 */
+.maintitle {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 30px 0 40px 0;
+}
+
+/* 중간제목 - h2 사이즈와 두께 */
+.middletitle {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* 소제목 - h3 사이즈와 두께 */
+.smalltitle {
+    font-size: 19px;
+    font-weight: bold;
+}
+
+/* 제목 - h5 사이즈와 두께 */
+.tinytitle {
+    font-size: 14px;
+}
+
+/* 두께 원상태 */
+.unbold {
+    font-weight: normal;
+}
+
+/* 진행전 버튼 */
+.beforebtn {
+    background-color: #eeeeee;
+    color: #000000;
+    font-size: 10px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* 진행중 버튼 */
+.ongoingbtn {
+    background-color: #ebfaeb;
+    color: #3cd139;
+    font-size: 10px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* 종료 버튼 */
+.finishbtn {
+    background-color: #fad7e8;
+    color: #d90f79;
+    font-size: 10px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+/* 색상 */
+.redcolor {
+    color: red;
+}
