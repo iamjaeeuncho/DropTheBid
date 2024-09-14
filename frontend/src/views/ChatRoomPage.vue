@@ -1,60 +1,60 @@
 <template>
   <div>
-    <div>
-      <input v-model="message" @keyup.enter="sendMessage" placeholder="Type a message..."/>
-      <button @click="sendMessage">Send</button>
-    </div>
     <div v-for="msg in messages" :key="msg.chatMessageId">
-      {{ msg.message }} ({{ msg.createdAt }})
+      <strong>{{ msg.memberId }}:</strong> {{ msg.message }}
     </div>
+    <input v-model="message" @keyup.enter="sendMessage" placeholder="Type your message" />
   </div>
 </template>
 
 <script>
-import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
+import { Client } from '@stomp/stompjs';
 
 export default {
   data() {
     return {
-      stompClient: null,
       message: '',
       messages: [],
+      stompClient: null
     };
   },
   mounted() {
-    this.connectWebSocket();
+    this.connect();
+  },
+  beforeDestroy() {
+    if (this.stompClient) {
+      this.stompClient.disconnect();
+    }
   },
   methods: {
-    connectWebSocket() {
-        const socket = new SockJS("http://localhost:8080/ws");
-        this.stompClient = Stomp.over(socket);
-
-        const token = localStorage.getItem('token'); // JWT 토큰 가져오기
-
-        this.stompClient.connect({ Authorization: 'Bearer ' + token }, (frame) => {
-            console.log("Connected: " + frame);
-
-            this.stompClient.subscribe("/topic/messages", (message) => {
-                const receivedMessage = JSON.parse(message.body);
-                this.messages.push(receivedMessage);
-            });
-        }, (error) => {
-            console.error("STOMP Error: " + error);
-        });
+    connect() {
+      const socket = new SockJS('http://localhost:8080/ws');
+      this.stompClient = new Client({
+        webSocketFactory: () => socket,
+        onConnect: frame => {
+          console.log('Connected: ' + frame);
+          this.stompClient.subscribe('/topic/messages', message => {
+            this.messages.push(JSON.parse(message.body));
+          });
+        }
+      });
+      this.stompClient.activate();
     },
     sendMessage() {
       if (this.message.trim()) {
         const chatMessage = {
-          chatMessageId: null, // 서버에서 생성된 ID로 대체될 것입니다
-          chatRoomId: 1,      // 채팅방 ID (적절히 설정하세요)
-          memberId: 1,        // 사용자 ID (적절히 설정하세요)
+          chatMessageId: null, // Your logic for ID generation
+          chatRoomId: 1, // Set your chat room ID
+          memberId: 1, // Set your member ID
           message: this.message,
-          createdAt: new Date().toISOString(),
+          createdAt: new Date().toISOString()
         };
-
-        this.stompClient.send("/app/send", {}, JSON.stringify(chatMessage));
-        this.message = ''; // 메시지 전송 후 입력창 비우기
+        this.stompClient.publish({
+          destination: '/app/send',
+          body: JSON.stringify(chatMessage)
+        });
+        this.message = '';
       }
     }
   }
@@ -62,5 +62,5 @@ export default {
 </script>
 
 <style scoped>
-/* 스타일링을 여기에 추가할 수 있습니다 */
+/* Add your styles here */
 </style>
