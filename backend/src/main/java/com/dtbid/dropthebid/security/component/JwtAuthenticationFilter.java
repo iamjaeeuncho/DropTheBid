@@ -1,10 +1,7 @@
 package com.dtbid.dropthebid.security.component;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -35,8 +32,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     String[] api = {"/members/signin", "/members/signup", "/auctions/month", "/auctions/popular",
         "/auctions/new", "/search", "/members/checks/refresh-token", 
         "/auctions/all/**",
-       "/payment", "/payment/**"
-       // "/chat", "/chat/create", "/chat/**", "/ws", "/ws/**"
+        "/payment", "/payment/**",
+        "/ws", "/ws/**", "/chat", "/chat/**", 
    };
 
     String path = request.getRequestURI();

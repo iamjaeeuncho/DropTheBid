@@ -52,8 +52,8 @@ public class SecurityConfig {
                 .requestMatchers("/members/checks/refresh-token").permitAll()
                 .requestMatchers("/ws").permitAll()
                 .requestMatchers("/ws/**").permitAll()
+                .requestMatchers("/ws/info").permitAll()
                 .requestMatchers("/chat").permitAll()
-                .requestMatchers("/chat/create").permitAll()
                 .requestMatchers("/chat/**").permitAll()
                 .requestMatchers("/auctions/all/*").permitAll()                
 //                .anyRequest().authenticated()                       // 그 외 모든 요청은 인증 요구

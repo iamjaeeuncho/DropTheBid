@@ -12,14 +12,14 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app"); 
+        config.enableSimpleBroker("/topic", "/queue"); // 메세지 브로커를 설정
+        config.setApplicationDestinationPrefixes("/app"); // 클라이언트에서 보낼 메시지의 prefix
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
-                .setAllowedOriginPatterns("*") // CORS settings
+                .setAllowedOrigins("http://localhost:3000")
                 .withSockJS();
     }
 }

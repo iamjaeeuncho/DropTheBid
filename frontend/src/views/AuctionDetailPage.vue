@@ -8,7 +8,7 @@
             </span>
             <span>
                 <v-btn icon class="ml-4">
-                    <v-icon>mdi-chat-outline</v-icon>
+                    <v-icon @click="navigateToChat">mdi-chat-outline</v-icon>
                 </v-btn>
             </span>
         </div>
@@ -309,6 +309,9 @@ export default {
         },
         formatBidTime(time) {
             return moment(time).format('YYYY년 MM월 DD일 HH시 mm분');
+        },
+        navigateToChat() {
+            this.$router.push(`/chat/${this.$route.params.id}`);
         },
     },
     mounted() {

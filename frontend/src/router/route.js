@@ -10,7 +10,6 @@ import PaymentPage from '@/views/PaymentPage.vue';
 import PaymentStatusPage from '@/views/PaymentStatusPage.vue';
 import AuctionDetailPage from '@/views/AuctionDetailPage.vue';
 
-import ChatPage from '@/views/ChatPage.vue';
 import ChatRoomPage from '@/views/ChatRoomPage.vue';
 import ChatListPage from '@/views/ChatListPage.vue';
 
@@ -51,14 +50,9 @@ export default [
         component: ChatListPage,
     },
     {
-        path: '/chatroom',
+        path: '/chat/:id',
         name: 'ChatRoomPage',
         component: ChatRoomPage,
-    },
-    {
-        path: '/chat/:chatRoomId',
-        name: 'ChatPage',
-        component: ChatPage,
     },
     {
         path: '/signin',

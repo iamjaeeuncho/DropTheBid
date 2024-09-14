@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatMessage {
     
-    // private Long chatMessageId;
+    private Long chatMessageId;
     private Long chatRoomId;
     private Long memberId;
     private String message;
