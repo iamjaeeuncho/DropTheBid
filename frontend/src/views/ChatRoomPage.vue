@@ -10,17 +10,35 @@
 <script>
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
+import axiosInstance from '../utils/axiosinstance';
+
+const loadMemberInfo = async () => {
+    try {
+        const res = await axiosInstance.get('/members/info');
+        return res.data;
+    } catch (error) {
+        console.error('Failed to load member info:', error);
+        throw error;
+    }
+};
 
 export default {
   data() {
     return {
       message: '',
       messages: [],
-      stompClient: null
+      stompClient: null,
+      chatRoomId: this.$route.params.id,
+      memberId: null, // Initialize memberId
     };
   },
-  mounted() {
-    this.connect();
+  async mounted() {
+    try {
+      await this.loadInfo(); // Load member info on mount
+      this.connect();
+    } catch (error) {
+      console.error('Error during mounting:', error);
+    }
   },
   beforeDestroy() {
     if (this.stompClient) {
@@ -28,6 +46,14 @@ export default {
     }
   },
   methods: {
+    async loadInfo() {
+      try {
+        const memberInfo = await loadMemberInfo();
+        this.memberId = memberInfo.memberId; // Set memberId from response
+      } catch (error) {
+        console.error('Failed to load member info:', error);
+      }
+    },
     connect() {
       const socket = new SockJS('http://localhost:8080/ws');
       this.stompClient = new Client({
@@ -44,9 +70,9 @@ export default {
     sendMessage() {
       if (this.message.trim()) {
         const chatMessage = {
-          chatMessageId: null, // Your logic for ID generation
-          chatRoomId: 1, // Set your chat room ID
-          memberId: 1, // Set your member ID
+          chatMessageId: null,
+          chatRoomId: this.chatRoomId,
+          memberId: this.memberId,
           message: this.message,
           createdAt: new Date().toISOString()
         };
