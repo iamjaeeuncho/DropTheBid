@@ -13,28 +13,47 @@
 </template>
 
 <script>
-import axiosInstance from '../utils/axiosinstance'; // Adjust the import path if necessary
+import axiosInstance from '../utils/axiosinstance';
+
+// 회원 정보 로드
+const loadMemberInfo = async () => {
+  try {
+    const res = await axiosInstance.get('/members/info');
+    return res.data;
+  } catch (error) {
+    console.error('Failed to load member info:', error);
+    throw error;
+  }
+};
 
 export default {
   data() {
     return {
-      chatRooms: [] // Array to hold the chat rooms
+      memberId: null,
+      chatRooms: []
     };
   },
   async created() {
     await this.fetchChatRooms();
   },
+  computed: {
+    isLogIn() {
+      return !!this.$store.getters.getAccessToken;
+    }
+  },
   methods: {
     async fetchChatRooms() {
       try {
-        const response = await axiosInstance.get('http://localhost:8080/find'); // Adjust the endpoint as needed
+        const memberInfo = await loadMemberInfo();
+        this.memberId = memberInfo.memberId;
+        console.log("memberId : " + this.memberId);
+        const response = await axiosInstance.get(`/chatrooms/${this.memberId}`);
         this.chatRooms = response.data;
       } catch (error) {
         console.error('Error fetching chat rooms:', error.response?.data || error);
       }
     },
     goToChatRoom(chatRoomId) {
-      // Navigate to the chat room page using Vue Router
       this.$router.push(`/chat/${chatRoomId}`);
     }
   }
@@ -42,9 +61,8 @@ export default {
 </script>
 
 <style scoped>
-@import '@/assets/style.css'; /* Importing global styles */
+@import '@/assets/style.css';
 
-/* Additional scoped styles */
 .maintitle {
   font-size: 24px;
   margin-bottom: 20px;

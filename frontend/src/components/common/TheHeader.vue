@@ -40,6 +40,10 @@
             <v-icon>mdi-account-circle-outline</v-icon>
         </v-btn>
 
+        <v-btn icon class="ml-4" to="/chat" v-if="isLogIn">
+            <v-icon>mdi-message-text-outline</v-icon>
+        </v-btn>
+
         <v-btn class="ml-4" to="/signin" v-if="!isLogIn" dark rounded> Login </v-btn>
         <v-btn class="ml-4" to="/" v-if="isLogIn" @click="handleLogout" dark rounded> Logout </v-btn>
         <v-btn class="ml-4" to="/signup" v-if="!isLogIn" dark rounded> Sign in </v-btn>
