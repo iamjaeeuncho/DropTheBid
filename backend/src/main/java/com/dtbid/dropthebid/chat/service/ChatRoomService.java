@@ -1,5 +1,6 @@
 package com.dtbid.dropthebid.chat.service;
 
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.dtbid.dropthebid.chat.model.ChatRoom;
@@ -22,5 +23,9 @@ public class ChatRoomService {
 
   public ChatRoom findById(long chatRoomId) {
     return chatRoomRepository.findById(chatRoomId);
+  }
+
+  public List<ChatRoom> findByMemberId(Long memberId) {
+    return chatRoomRepository.findByMemberId(memberId);
   }
 }

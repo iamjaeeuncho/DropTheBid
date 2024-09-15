@@ -31,5 +31,10 @@
         FROM CHATTING_ROOM
         WHERE CHATTING_ROOM_ID = #{chatRoomId}
     </select>
-
+	
+	<select id="findByMemberId" parameterType="Long" resultType="com.dtbid.dropthebid.chat.model.ChatRoom">
+	    SELECT * FROM CHATTING_ROOM
+	    WHERE MEMBER_ID = #{memberId}
+	</select>
+	
 </mapper>

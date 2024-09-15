@@ -48,6 +48,11 @@ public class ChatController {
       return existingChatRoom;
   }
   
+  @GetMapping("/room/{chatRoomId}/messages")
+  public List<ChatMessage> getMessages(@PathVariable("chatRoomId") Long chatRoomId) {
+      return chatMessageService.findMessagesByChatRoomId(chatRoomId);
+  }
+  
   @MessageMapping("/send")
   @SendTo("/topic/messages")
   public ChatMessage sendMessage(ChatMessage message) {
@@ -55,9 +60,9 @@ public class ChatController {
       chatMessageService.createChatMessage(message);
       return message;
   }
-  
-  @GetMapping("/room/{chatRoomId}/messages")
-  public List<ChatMessage> getMessages(@PathVariable(name="chatRoomId") Long chatRoomId) {
-      return chatMessageService.findMessagesByChatRoomId(chatRoomId);
+
+  @GetMapping("/chatrooms/{memberId}")
+  public List<ChatRoom> getChatRoomsByMemberId(@PathVariable("memberId") Long memberId) {
+      return chatRoomService.findByMemberId(memberId);
   }
 }

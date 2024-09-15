@@ -1,5 +1,6 @@
 package com.dtbid.dropthebid.chat.repository;
 
+import java.util.List;
 import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import com.dtbid.dropthebid.chat.model.ChatRoom;
@@ -12,4 +13,6 @@ public interface ChatRoomRepository {
     ChatRoom findByAuctionIdAndMemberId(Map<String, Object> params);
 
     ChatRoom findById(long chatRoomId);
+
+    List<ChatRoom> findByMemberId(Long memberId);
 }
