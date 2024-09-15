@@ -25,4 +25,12 @@
     <select id="findById" parameterType="long" resultType="com.dtbid.dropthebid.chat.model.ChatMessage">
         SELECT * FROM CHATTING_MESSAGE WHERE CHATTING_MESSAGE_ID = #{chatMessageId}
     </select>
+    
+    <select id="findByChatRoomId" parameterType="Long" resultType="com.dtbid.dropthebid.chat.model.ChatMessage">
+	    SELECT *
+	    FROM CHATTING_MESSAGE 
+	    WHERE CHATTING_ROOM_ID = #{chatRoomId} 
+	    ORDER BY CREATED_AT ASC
+	</select>
+	
 </mapper>

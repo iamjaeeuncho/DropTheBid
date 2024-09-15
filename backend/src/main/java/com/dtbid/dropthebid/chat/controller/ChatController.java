@@ -1,9 +1,12 @@
 package com.dtbid.dropthebid.chat.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,6 +33,7 @@ public class ChatController {
       params.put("memberId", memberId);
 
       ChatRoom existingChatRoom = chatRoomService.findByAuctionIdAndMemberId(params);
+      System.out.println("existingChatRoom : " + existingChatRoom);
       
       if (existingChatRoom == null) {
           ChatRoom newChatRoom = new ChatRoom();
@@ -37,19 +41,23 @@ public class ChatController {
           newChatRoom.setMemberId(memberId);
 
           chatRoomService.createChatRoom(newChatRoom);
-          long chatRoomId = newChatRoom.getChatRoomId();
 
           return newChatRoom;
       }
-      System.out.println("existingChatRoom : " + existingChatRoom);
+
       return existingChatRoom;
   }
   
   @MessageMapping("/send")
   @SendTo("/topic/messages")
   public ChatMessage sendMessage(ChatMessage message) {
-      System.out.println(message);
+      System.out.println("message : " + message);
       chatMessageService.createChatMessage(message);
       return message;
+  }
+  
+  @GetMapping("/room/{chatRoomId}/messages")
+  public List<ChatMessage> getMessages(@PathVariable(name="chatRoomId") Long chatRoomId) {
+      return chatMessageService.findMessagesByChatRoomId(chatRoomId);
   }
 }

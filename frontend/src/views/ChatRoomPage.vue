@@ -1,18 +1,21 @@
 <template>
-  <div class="chat-container">
-    <div class="messages">
-      <div v-for="msg in messages" :key="msg.chatMessageId" class="message">
-        <strong class="member-id">{{ msg.memberId }}:</strong> {{ msg.message }}
+  <div>
+    <h2><center>채팅하기</center></h2>
+    <div class="chat-container">
+      <div class="messages">
+        <div v-for="msg in messages" :key="msg.chatMessageId" class="message">
+          <strong class="member-id">{{ msg.memberId }}:</strong> {{ msg.message }}
+        </div>
       </div>
-    </div>
-    <div class="input-container">
-      <input
-        v-model="message"
-        @keyup.enter="sendMessage"
-        placeholder="Type your message"
-        class="message-input"
-      />
-      <button @click="sendMessage" class="send-button">Send</button>
+      <div class="input-container">
+        <input
+          v-model="message"
+          @keyup.enter="sendMessage"
+          placeholder="Type your message"
+          class="message-input"
+        />
+        <button @click="sendMessage" class="send-button">Send</button>
+      </div>
     </div>
   </div>
 </template>
@@ -22,27 +25,29 @@ import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import axiosInstance from '../utils/axiosinstance';
 
+// 회원 정보 로드
 const loadMemberInfo = async () => {
-    try {
-        const res = await axiosInstance.get('/members/info');
-        return res.data;
-    } catch (error) {
-        console.error('Failed to load member info:', error);
-        throw error;
-    }
+  try {
+    const res = await axiosInstance.get('/members/info');
+    return res.data;
+  } catch (error) {
+    console.error('Failed to load member info:', error);
+    throw error;
+  }
 };
 
+// 채팅방 생성 또는 참가
 const createChatRoom = async (auctionId, memberId) => {
-    try {
-        const res = await axiosInstance.post('/chatrooms/create', {
-            auctionId,
-            memberId
-        });
-        return res.data;
-    } catch (error) {
-        console.error('Failed to create chat room:', error);
-        throw error;
-    }
+  try {
+    const res = await axiosInstance.post('/room/join', {
+      auctionId,
+      memberId
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Failed to create chat room:', error);
+    throw error;
+  }
 };
 
 export default {
@@ -59,6 +64,7 @@ export default {
     try {
       await this.loadInfo();
       await this.createOrJoinChatRoom();
+      await this.loadMessages(); // 추가된 부분
       this.connect();
     } catch (error) {
       console.error('Error during mounting:', error);
@@ -82,10 +88,17 @@ export default {
       try {
         const auctionId = this.$route.params.id;
         const chatRoom = await createChatRoom(auctionId, this.memberId);
-        console.log("chatRoom" + chatRoom.chatRoomId)
         this.chatRoomId = chatRoom.chatRoomId;
       } catch (error) {
         console.error('Failed to create or join chat room:', error);
+      }
+    },
+    async loadMessages() {
+      try {
+        const response = await axiosInstance.get(`/room/${this.chatRoomId}/messages`);
+        this.messages = response.data;
+      } catch (error) {
+        console.error('Failed to load messages:', error);
       }
     },
     connect() {
