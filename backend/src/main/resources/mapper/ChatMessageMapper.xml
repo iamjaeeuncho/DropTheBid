@@ -19,7 +19,7 @@
         <selectKey keyProperty="chatMessageId" resultType="long" order="AFTER">
         SELECT CHAT_MESSAGE_SEQ.CURRVAL
         FROM DUAL
-    </selectKey>
+    	</selectKey>
     </insert>
 
     <select id="findById" parameterType="long" resultType="com.dtbid.dropthebid.chat.model.ChatMessage">

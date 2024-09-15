@@ -1,5 +1,6 @@
 package com.dtbid.dropthebid.chat.service;
 
+import java.util.Map;
 import org.springframework.stereotype.Service;
 import com.dtbid.dropthebid.chat.model.ChatRoom;
 import com.dtbid.dropthebid.chat.repository.ChatRoomRepository;
@@ -11,12 +12,15 @@ public class ChatRoomService {
 
   private final ChatRoomRepository chatRoomRepository;
 
-  public ChatRoom createChatRoom(Long auctionId, Long memberId) {
-      ChatRoom chatRoom = new ChatRoom();
-      chatRoom.setAuctionId(auctionId);
-      chatRoom.setMemberId(memberId);
-      
-      chatRoomRepository.save(chatRoom);
-      return chatRoom;
+  public ChatRoom findByAuctionIdAndMemberId(Map<String, Object> params) {
+    return chatRoomRepository.findByAuctionIdAndMemberId(params);
+  }
+
+  public void createChatRoom(ChatRoom newChatRoom) {
+    chatRoomRepository.save(newChatRoom);
+  }
+
+  public ChatRoom findById(long chatRoomId) {
+    return chatRoomRepository.findById(chatRoomId);
   }
 }

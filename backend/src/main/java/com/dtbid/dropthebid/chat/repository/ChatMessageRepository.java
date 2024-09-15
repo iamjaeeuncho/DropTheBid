@@ -6,7 +6,7 @@ import com.dtbid.dropthebid.chat.model.ChatMessage;
 @Mapper
 public interface ChatMessageRepository {
 
-  void save(ChatMessage message);
+  long save(ChatMessage message);
 
   ChatMessage findById(Long chatMessageId);
 }

@@ -12,18 +12,23 @@
     </resultMap>
 
     <insert id="save" parameterType="com.dtbid.dropthebid.chat.model.ChatRoom" useGeneratedKeys="true" keyProperty="chatRoomId">
-    	INSERT INTO CHATTING_ROOM (CHATTING_ROOM_ID, AUCTION_ID, MEMBER_ID)
-    	VALUES (CHAT_ROOM_SEQ.NEXTVAL, #{auctionId}, #{memberId})
+	    INSERT INTO CHATTING_ROOM (CHATTING_ROOM_ID, AUCTION_ID, MEMBER_ID)
+	    VALUES (CHAT_ROOM_SEQ.NEXTVAL, #{auctionId}, #{memberId})
 	    <selectKey keyProperty="chatRoomId" resultType="long" order="AFTER">
 	        SELECT CHAT_ROOM_SEQ.CURRVAL
 	        FROM DUAL
 	    </selectKey>
 	</insert>
-
-    <select id="findById" parameterType="long" resultType="com.dtbid.dropthebid.chat.model.ChatRoom">
-        SELECT CHATTING_ROOM_ID, AUCTION_ID, MEMBER_ID
+    
+    <select id="findByAuctionIdAndMemberId" parameterType="map" resultType="com.dtbid.dropthebid.chat.model.ChatRoom">
+        SELECT * FROM CHATTING_ROOM
+        WHERE AUCTION_ID = #{auctionId}
+        AND MEMBER_ID = #{memberId}
+    </select>
+    
+    <select id="findById" parameterType="Long" resultType="com.dtbid.dropthebid.chat.model.ChatRoom">
+        SELECT *
         FROM CHATTING_ROOM
         WHERE CHATTING_ROOM_ID = #{chatRoomId}
     </select>
-
 </mapper>
