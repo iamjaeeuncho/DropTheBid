@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dtbid.dropthebid.chat.repository.ChatMessageRepository">
+
+    <resultMap id="ChatMessageResultMap" type="com.dtbid.dropthebid.chat.model.ChatMessage">
+        <id property="chatMessageId" column="CHATTING_MESSAGE_ID" javaType="long"/>
+        <result property="chatRoomId" column="CHATTING_ROOM_ID" javaType="long"/>
+        <result property="memberId" column="MEMBER_ID" javaType="long"/>
+        <result property="message" column="MESSAGE" javaType="string"/>
+        <result property="createdAt" column="CREATED_AT" javaType="java.sql.Timestamp"/>
+    </resultMap>
+    
+    <insert id="save" parameterType="com.dtbid.dropthebid.chat.model.ChatMessage" useGeneratedKeys="true" keyProperty="chatMessageId">
+        INSERT INTO CHATTING_MESSAGE (CHATTING_MESSAGE_ID, CHATTING_ROOM_ID, MEMBER_ID, MESSAGE, CREATED_AT)
+        VALUES (CHAT_MESSAGE_SEQ.NEXTVAL, #{chatRoomId}, #{memberId}, #{message}, #{createdAt})
+        <selectKey keyProperty="chatMessageId" resultType="long" order="AFTER">
+        SELECT CHAT_MESSAGE_SEQ.CURRVAL
+        FROM DUAL
+    </selectKey>
+    </insert>
+
+    <select id="findById" parameterType="long" resultType="com.dtbid.dropthebid.chat.model.ChatMessage">
+        SELECT * FROM CHATTING_MESSAGE WHERE CHATTING_MESSAGE_ID = #{chatMessageId}
+    </select>
+</mapper>

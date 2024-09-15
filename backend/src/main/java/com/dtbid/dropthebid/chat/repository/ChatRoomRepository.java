@@ -6,6 +6,7 @@ import com.dtbid.dropthebid.chat.model.ChatRoom;
 @Mapper
 public interface ChatRoomRepository {
 
-    void insertChatRoom(ChatRoom chatRoom);
-    
+    int save(ChatRoom chatRoom);
+
+    ChatRoom findById(Long chatRoomId);
 }
