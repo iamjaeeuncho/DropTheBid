@@ -15,4 +15,5 @@ public interface ChatRoomRepository {
     ChatRoom findById(long chatRoomId);
     
     List<ChatRoom> findChatRoomsByMemberId(Long memberId);
+
 }

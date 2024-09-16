@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,10 +29,13 @@ public class ChatController {
   private final ChatMessageService chatMessageService;
   
   // 메세지 보내기
-  @MessageMapping("/send/{chatRoomId}")
-  @SendTo("/topic/messages/{chatRoomId}")
-  public ChatMessage sendMessage(ChatMessage message) {
-      System.out.println("message : " + message);
+  @MessageMapping("/chat/{auctionId}/{memberId}")
+  @SendTo("/topic/chat/{auctionId}/{memberId}")
+  public ChatMessage sendMessage(
+      @DestinationVariable("auctionId") Long auctionId,
+      @DestinationVariable("memberId") Long memberId,
+      ChatMessage message) {
+      System.out.println("Received message: " + message);
       chatMessageService.createChatMessage(message);
       return message;
   }
@@ -60,12 +65,6 @@ public class ChatController {
 
       return existingChatRoom;
   }
-
-//  @GetMapping("/member/{auctionId}")
-//  public ResponseEntity<Long> getMemberId(@PathVariable Long auctionId) {
-//      Long memberId = chatRoomService.getMemberIdForAuction(auctionId);
-//      return ResponseEntity.ok(memberId);
-//  }
   
   // 사용자 ID로 채팅방 목록 조회
   @GetMapping("/room/{memberId}")
@@ -75,4 +74,21 @@ public class ChatController {
       return chatRooms;
   }
   
+  //특정 채팅방의 메시지 로드
+  @GetMapping("/room/{chatRoomId}")
+  public ResponseEntity<List<ChatMessage>> getChatMessages(@PathVariable Long chatRoomId) {
+      List<ChatMessage> messages = chatMessageService.getChatMessagesByRoomId(chatRoomId);
+      return ResponseEntity.ok(messages);
+  }
+  
+  //채팅방의 기존 메시지 로드
+  @GetMapping("/room/{auctionId}/{memberId}")
+  public ResponseEntity<List<ChatMessage>> getChatMessages(
+          @PathVariable Long auctionId,
+          @PathVariable Long memberId) {
+
+      List<ChatMessage> chatMessages = chatMessageService.getMessagesByAuctionIdAndMemberId(auctionId, memberId);
+      return ResponseEntity.ok(chatMessages);
+
+  }
 }
