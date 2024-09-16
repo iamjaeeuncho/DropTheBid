@@ -66,6 +66,7 @@ export default {
       await this.loadInfo();
       // 채팅방 생성 또는 참여
       await this.createOrJoinChatRoom();
+      await this.loadMessages();
       // WebSocket 연결 및 구독
       this.connect();
     } catch (error) {
@@ -138,7 +139,8 @@ export default {
     // 채팅방의 기존 메시지 로드
     async loadMessages() {
       try {
-        const response = await axiosInstance.get(`/room/${this.$route.params.id}/${this.$route.params.memberId}`);
+        console.log(this.chatRoomId);
+        const response = await axiosInstance.get(`/messages/${this.chatRoomId}`);
         this.messages = response.data;
       } catch (error) {
         console.error('Failed to load messages:', error);

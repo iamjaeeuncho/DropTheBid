@@ -29,7 +29,7 @@ const loadMemberInfo = async () => {
 // 채팅방 리스트 로드
 const loadChatRooms = async (memberId) => {
   try {
-    const res = await axiosInstance.get(`/room/${memberId}`);
+    const res = await axiosInstance.get(`/rooms/${memberId}`);
     return res.data;
   } catch (error) {
     console.error('Failed to load chat rooms:', error);
