@@ -31,10 +31,12 @@
         FROM CHATTING_ROOM
         WHERE CHATTING_ROOM_ID = #{chatRoomId}
     </select>
-	
-	<select id="findByMemberId" parameterType="Long" resultType="com.dtbid.dropthebid.chat.model.ChatRoom">
-	    SELECT * FROM CHATTING_ROOM
-	    WHERE MEMBER_ID = #{memberId}
-	</select>
-	
+
+	<select id="findChatRoomsByMemberId" parameterType="Long" resultMap="ChatRoomResultMap">
+        SELECT *
+        FROM CHATTING_ROOM
+        WHERE MEMBER_ID = #{memberId}
+        OR AUCTION_ID IN (SELECT AUCTION_ID FROM AUCTION WHERE MEMBER_ID = #{memberId})
+    </select>
+    
 </mapper>

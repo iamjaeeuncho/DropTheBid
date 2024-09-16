@@ -1,16 +1,17 @@
 package com.dtbid.dropthebid.auction.repository;
 
-import com.dtbid.dropthebid.member.model.dto.MemberAuctionDto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import com.dtbid.dropthebid.auction.model.AuctionDto;
 import com.dtbid.dropthebid.auction.model.AuctionForm;
 import com.dtbid.dropthebid.auction.model.BiddingDto;
 import com.dtbid.dropthebid.auction.model.Image;
+import com.dtbid.dropthebid.member.model.dto.MemberAuctionDto;
 
 @Mapper
 @Repository
@@ -52,4 +53,9 @@ public interface AuctionRepository {
 
   // 오동건 - 나의 입찰 총 수
   int countByMemberBidding(Long memberId);
+  
+  // 조재은
+  @Select("SELECT member_id FROM auction WHERE auction_id = #{auctionId}")
+  Long findMemberIdByAuctionId(Long auctionId);
+
 }

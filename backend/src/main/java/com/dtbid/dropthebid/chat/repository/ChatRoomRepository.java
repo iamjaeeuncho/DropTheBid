@@ -13,6 +13,6 @@ public interface ChatRoomRepository {
     ChatRoom findByAuctionIdAndMemberId(Map<String, Object> params);
 
     ChatRoom findById(long chatRoomId);
-
-    List<ChatRoom> findByMemberId(Long memberId);
+    
+    List<ChatRoom> findChatRoomsByMemberId(Long memberId);
 }

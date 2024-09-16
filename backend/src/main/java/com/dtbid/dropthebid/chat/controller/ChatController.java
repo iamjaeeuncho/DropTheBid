@@ -3,6 +3,7 @@ package com.dtbid.dropthebid.chat.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +20,22 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
-
+  
+  @Autowired
   private final ChatRoomService chatRoomService;
+  @Autowired
   private final ChatMessageService chatMessageService;
   
+  // 메세지 보내기
+  @MessageMapping("/send/{chatRoomId}")
+  @SendTo("/topic/messages/{chatRoomId}")
+  public ChatMessage sendMessage(ChatMessage message) {
+      System.out.println("message : " + message);
+      chatMessageService.createChatMessage(message);
+      return message;
+  }
+  
+  // 채팅방 참여
   @PostMapping("/room/join")
   public ChatRoom joinChatRoom(@RequestBody Map<String, Long> request) {
       Long auctionId = request.get("auctionId");
@@ -47,22 +60,19 @@ public class ChatController {
 
       return existingChatRoom;
   }
-  
-  @GetMapping("/room/{chatRoomId}/messages")
-  public List<ChatMessage> getMessages(@PathVariable("chatRoomId") Long chatRoomId) {
-      return chatMessageService.findMessagesByChatRoomId(chatRoomId);
-  }
-  
-  @MessageMapping("/send")
-  @SendTo("/topic/messages")
-  public ChatMessage sendMessage(ChatMessage message) {
-      System.out.println("message : " + message);
-      chatMessageService.createChatMessage(message);
-      return message;
-  }
 
-  @GetMapping("/chatrooms/{memberId}")
-  public List<ChatRoom> getChatRoomsByMemberId(@PathVariable("memberId") Long memberId) {
-      return chatRoomService.findByMemberId(memberId);
+//  @GetMapping("/member/{auctionId}")
+//  public ResponseEntity<Long> getMemberId(@PathVariable Long auctionId) {
+//      Long memberId = chatRoomService.getMemberIdForAuction(auctionId);
+//      return ResponseEntity.ok(memberId);
+//  }
+  
+  // 사용자 ID로 채팅방 목록 조회
+  @GetMapping("/room/{memberId}")
+  public List<ChatRoom> getChatRooms(@PathVariable("memberId") Long memberId) {
+      List<ChatRoom> chatRooms = chatRoomService.findChatRoomsByMemberId(memberId);
+      System.out.println("test" + chatRooms);
+      return chatRooms;
   }
+  
 }
