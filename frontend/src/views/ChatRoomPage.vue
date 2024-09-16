@@ -57,7 +57,7 @@ export default {
       messages: [],
       stompClient: null,
       chatRoomId: null,
-      memberId: null,
+      loginMemberId: null,
     };
   },
   async mounted() {
@@ -66,8 +66,6 @@ export default {
       await this.loadInfo();
       // 채팅방 생성 또는 참여
       await this.createOrJoinChatRoom();
-      // 이전 메시지 로드
-      await this.loadMessages();
       // WebSocket 연결 및 구독
       this.connect();
     } catch (error) {
@@ -76,7 +74,7 @@ export default {
   },
   beforeDestroy() {
     if (this.stompClient) {
-      this.stompClient.disconnect();
+      this.stompClient.deactivate();
     }
   },
   methods: {
@@ -84,7 +82,7 @@ export default {
     async loadInfo() {
       try {
         const memberInfo = await loadMemberInfo();
-        this.memberId = memberInfo.memberId;
+        this.loginMemberId = memberInfo.memberId;
       } catch (error) {
         console.error('Failed to load member info:', error);
       }
@@ -92,20 +90,10 @@ export default {
     // 채팅방 생성 또는 참여
     async createOrJoinChatRoom() {
       try {
-        const auctionId = this.$route.params.id;
-        const chatRoom = await createChatRoom(auctionId, this.memberId);
+        const chatRoom = await createChatRoom(this.$route.params.id, this.$route.params.memberId);
         this.chatRoomId = chatRoom.chatRoomId;
       } catch (error) {
         console.error('Failed to create or join chat room:', error);
-      }
-    },
-    // 채팅방의 기존 메시지 로드
-    async loadMessages() {
-      try {
-        const response = await axiosInstance.get(`/room/${this.chatRoomId}/messages`);
-        this.messages = response.data;
-      } catch (error) {
-        console.error('Failed to load messages:', error);
       }
     },
     // WebSocket 연결 및 메시지 구독
@@ -113,12 +101,18 @@ export default {
       const socket = new SockJS('http://localhost:8080/ws');
       this.stompClient = new Client({
         webSocketFactory: () => socket,
+        connectHeaders: {},
         onConnect: frame => {
           console.log('Connected: ' + frame);
-          // chatRoomId에 맞는 경로로 구독
-          this.stompClient.subscribe(`/topic/messages/${this.chatRoomId}`, message => {
+          this.stompClient.subscribe(`/topic/chat/${this.$route.params.id}/${this.$route.params.memberId}`, message => {
             this.messages.push(JSON.parse(message.body));
           });
+        },
+        onStompError: frame => {
+          console.error('STOMP Error:', frame);
+        },
+        debug: function (str) {
+          console.log('STOMP Debug:', str);
         }
       });
       this.stompClient.activate();
@@ -129,19 +123,27 @@ export default {
         const chatMessage = {
           chatMessageId: null,
           chatRoomId: this.chatRoomId,
-          memberId: this.memberId,
+          memberId: this.loginMemberId,
           message: this.message,
           createdAt: new Date().toISOString()
         };
         
-        // chatRoomId를 포함한 경로로 메시지 전송
         this.stompClient.publish({
-          destination: `/app/send/${this.chatRoomId}`,
+          destination: `/app/chat/${this.$route.params.id}/${this.$route.params.memberId}`,
           body: JSON.stringify(chatMessage)
         });
-        this.message = '';  // 메시지 입력 초기화
+        this.message = '';
       }
-    }
+    },
+    // 채팅방의 기존 메시지 로드
+    async loadMessages() {
+      try {
+        const response = await axiosInstance.get(`/room/${this.$route.params.id}/${this.$route.params.memberId}`);
+        this.messages = response.data;
+      } catch (error) {
+        console.error('Failed to load messages:', error);
+      }
+    },
   }
 };
 </script>

@@ -165,6 +165,17 @@ import moment from 'moment';
 import axiosInstance from '../utils/axiosinstance';
 import BaseButton from '@/components/member/atoms/BaseButton.vue';
 
+// 회원 정보 로드
+const loadMemberInfo = async () => {
+  try {
+    const res = await axiosInstance.get('/members/info');
+    return res.data;
+  } catch (error) {
+    console.error('Failed to load member info:', error);
+    throw error;
+  }
+};
+
 export default {
     components: { BaseButton },
     name: 'AuctionDetailPage',
@@ -196,9 +207,18 @@ export default {
             successDialog: false,
             errorMessages: [],
             isBidPriceValid: false,
+            memberId: null,
         };
     },
     methods: {
+        async loadInfo() {
+            try {
+                const memberInfo = await loadMemberInfo();
+                this.memberId = memberInfo.memberId;
+            } catch (error) {
+                console.error('Failed to load member info:', error);
+            }
+        },
         async setAuctionData() {
             try {
                 const res = await axios.get(`/auctions/all/${this.$route.params.id}`, {
@@ -311,10 +331,11 @@ export default {
             return moment(time).format('YYYY년 MM월 DD일 HH시 mm분');
         },
         navigateToChat() {
-            this.$router.push(`/chat/${this.$route.params.id}`);
+            this.$router.push(`/chat/${this.$route.params.id}/${this.memberId}`);
         },
     },
     mounted() {
+        this.loadInfo();
         this.setAuctionData();
         this.setBiddingData();
         this.updateRemainingTime();

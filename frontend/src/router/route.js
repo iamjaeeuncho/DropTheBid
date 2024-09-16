@@ -50,7 +50,7 @@ export default [
         component: ChatListPage,
     },
     {
-        path: '/chat/:id',
+        path: '/chat/:id/:memberId',
         name: 'ChatRoomPage',
         component: ChatRoomPage,
     },

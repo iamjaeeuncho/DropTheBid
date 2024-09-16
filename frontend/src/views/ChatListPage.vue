@@ -5,7 +5,7 @@
       <li v-for="chatRoom in chatRooms" :key="chatRoom.chatRoomId">
         <div>Auction ID: {{ chatRoom.auctionId }}</div>
         <div>Member ID: {{ chatRoom.memberId }}</div>
-        <button @click="goToChatRoom(chatRoom.chatRoomId)">Go to Chat Room</button>
+        <button @click="goToChatRoom(chatRoom.auctionId, chatRoom.memberId)">채팅방 가기</button>
       </li>
     </ul>
     <p v-else>채팅방이 없습니다.</p>
@@ -57,17 +57,15 @@ export default {
       try {
         const memberInfo = await loadMemberInfo();
         this.memberId = memberInfo.memberId;
-        console.log("Member ID:", this.memberId);
 
         const chatRooms = await loadChatRooms(this.memberId);
         this.chatRooms = chatRooms;
-        console.log("Chat Rooms:", this.chatRooms);
       } catch (error) {
         console.error('Error fetching chat rooms:', error.response?.data || error);
       }
     },
-    goToChatRoom(chatRoomId) {
-      this.$router.push(`/chat/${chatRoomId}`);
+    goToChatRoom(auctionId, memberId) {
+      this.$router.push(`/chat/${auctionId}/${memberId}`);
     }
   }
 };
