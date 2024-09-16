@@ -3,7 +3,7 @@
     <h2><center>채팅하기</center></h2>
     <div class="chat-container">
       <div class="messages">
-        <div v-for="msg in messages" :key="msg.chatMessageId" class="message">
+        <div v-for="msg in messages" :key="msg.chatMessageId" :class="['message', isCurrentUser(msg.memberId) ? 'current-user' : 'other-user']">
           <strong class="member-id">{{ msg.memberId }}:</strong> {{ msg.message }}
         </div>
       </div>
@@ -146,6 +146,10 @@ export default {
         console.error('Failed to load messages:', error);
       }
     },
+    // 현재 사용자가 보낸 메시지인지 확인
+    isCurrentUser(memberId) {
+      return memberId === this.loginMemberId;
+    }
   }
 };
 </script>
@@ -176,6 +180,15 @@ export default {
   padding: 5px;
   border-radius: 4px;
   background-color: #f1f1f1;
+}
+
+.current-user {
+  background-color: #d1e7dd; /* Light green background for current user's messages */
+  text-align: right;
+}
+
+.other-user {
+  background-color: #f1f1f1; /* Default background for other users' messages */
 }
 
 .member-id {
