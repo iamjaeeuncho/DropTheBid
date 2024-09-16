@@ -26,6 +26,17 @@ const loadMemberInfo = async () => {
   }
 };
 
+// 채팅방 리스트 로드
+const loadChatRooms = async (memberId) => {
+  try {
+    const res = await axiosInstance.get(`/room/${memberId}`);
+    return res.data;
+  } catch (error) {
+    console.error('Failed to load chat rooms:', error);
+    throw error;
+  }
+};
+
 export default {
   data() {
     return {
@@ -46,9 +57,11 @@ export default {
       try {
         const memberInfo = await loadMemberInfo();
         this.memberId = memberInfo.memberId;
-        console.log("memberId : " + this.memberId);
-        const response = await axiosInstance.get(`/chatrooms/${this.memberId}`);
-        this.chatRooms = response.data;
+        console.log("Member ID:", this.memberId);
+
+        const chatRooms = await loadChatRooms(this.memberId);
+        this.chatRooms = chatRooms;
+        console.log("Chat Rooms:", this.chatRooms);
       } catch (error) {
         console.error('Error fetching chat rooms:', error.response?.data || error);
       }
@@ -96,5 +109,14 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+strong {
+  display: block;
+  margin-top: 10px;
+}
+
+ul {
+  padding-left: 20px;
 }
 </style>

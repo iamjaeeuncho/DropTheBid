@@ -62,9 +62,13 @@ export default {
   },
   async mounted() {
     try {
+      // 사용자 정보 로드
       await this.loadInfo();
+      // 채팅방 생성 또는 참여
       await this.createOrJoinChatRoom();
-      await this.loadMessages(); // 추가된 부분
+      // 이전 메시지 로드
+      await this.loadMessages();
+      // WebSocket 연결 및 구독
       this.connect();
     } catch (error) {
       console.error('Error during mounting:', error);
@@ -76,6 +80,7 @@ export default {
     }
   },
   methods: {
+    // 사용자 정보 로드
     async loadInfo() {
       try {
         const memberInfo = await loadMemberInfo();
@@ -84,6 +89,7 @@ export default {
         console.error('Failed to load member info:', error);
       }
     },
+    // 채팅방 생성 또는 참여
     async createOrJoinChatRoom() {
       try {
         const auctionId = this.$route.params.id;
@@ -93,6 +99,7 @@ export default {
         console.error('Failed to create or join chat room:', error);
       }
     },
+    // 채팅방의 기존 메시지 로드
     async loadMessages() {
       try {
         const response = await axiosInstance.get(`/room/${this.chatRoomId}/messages`);
@@ -101,19 +108,22 @@ export default {
         console.error('Failed to load messages:', error);
       }
     },
+    // WebSocket 연결 및 메시지 구독
     connect() {
       const socket = new SockJS('http://localhost:8080/ws');
       this.stompClient = new Client({
         webSocketFactory: () => socket,
         onConnect: frame => {
           console.log('Connected: ' + frame);
-          this.stompClient.subscribe('/topic/messages', message => {
+          // chatRoomId에 맞는 경로로 구독
+          this.stompClient.subscribe(`/topic/messages/${this.chatRoomId}`, message => {
             this.messages.push(JSON.parse(message.body));
           });
         }
       });
       this.stompClient.activate();
     },
+    // 메시지 전송
     sendMessage() {
       if (this.message.trim()) {
         const chatMessage = {
@@ -123,11 +133,13 @@ export default {
           message: this.message,
           createdAt: new Date().toISOString()
         };
+        
+        // chatRoomId를 포함한 경로로 메시지 전송
         this.stompClient.publish({
-          destination: '/app/send',
+          destination: `/app/send/${this.chatRoomId}`,
           body: JSON.stringify(chatMessage)
         });
-        this.message = '';
+        this.message = '';  // 메시지 입력 초기화
       }
     }
   }
