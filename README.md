@@ -52,59 +52,65 @@
       <li>입찰이 많은 경매</li>
     </ul>
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/099d2c30-eb1d-42d7-89a5-0fb8f481fb39">
+    <img width="900" src="https://github.com/user-attachments/assets/cd42b391-39e6-4437-b087-b511f04387f5">
   </li>
   <br>
 
   <li>필터 및 정렬페이지
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/c25078fb-21ce-4646-bf3b-07c89c196815">
+    <img width="900" src="https://github.com/user-attachments/assets/920cf703-a3ba-4681-aea3-fc6d00855abe">
   </li>
   <br>
 
   <li>경매 상품 등록페이지
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/1d6c5bcc-57a0-4c0f-8d82-a198bbe89baf">
+    <img width="900" src="https://github.com/user-attachments/assets/97ac69b4-025a-430a-852f-b4be3f030bb5">
   </li>
   <br>
 
   <li>상품 상세페이지
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/54736dbf-dd07-4436-9ca1-4462c5cb94e8">
+    <img width="900" src="https://github.com/user-attachments/assets/67e67f28-d7d5-4b7f-bfe2-7f939752b7f6">
   </li>
   <br>
 
   <li>입찰 모달
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/dca52020-b448-4b71-97eb-f445068cf94c">
+    <img width="900" src="https://github.com/user-attachments/assets/60c9fdbb-398a-42f5-a5cf-49d6b58dee4d">
+  </li>
+  <br>
+
+  <li>결제
+    <br>
+    <img width="900" src="https://github.com/user-attachments/assets/815d5a35-cfc4-48ec-9e7f-abd229b255f7">
+    <img width="900" src="https://github.com/user-attachments/assets/3a47e348-b0cb-42e1-83f5-fab9dfb4e3b6">
   </li>
   <br>
 
   <li>회원 가입
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/f4d2449f-8bdd-4454-8e5a-1983e5d74b26">
+    <img width="900" src="https://github.com/user-attachments/assets/7a26a440-66d5-41f0-82ca-66ee8d3e34d6">
   </li>
   <br>
 
   <li>로그인
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/bac96df2-fc5f-4abf-ad20-218a4444f736">
+    <img width="900" src="https://github.com/user-attachments/assets/02c9fa6b-cecc-43af-987b-5ee1cd282d70">
   </li>
   <br>
 
   <li>마이페이지
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/4a747b6e-21e8-4a22-b14f-99fe4bd548a6">
-    <img width="900" src="https://github.com/user-attachments/assets/19a86e39-a328-45b5-a9d7-22b58330bd42">
-    <img width="900" src="https://github.com/user-attachments/assets/fcbbdb28-0833-4ffb-9f49-c6f568e40444">
+    <img width="900" src="https://github.com/user-attachments/assets/c0a959e7-b438-499d-bf8d-5ede775c15ab">
+    <img width="900" src="https://github.com/user-attachments/assets/e91dd9d5-9998-4a9a-8ab8-48b984077949">
+    <img width="900" src="https://github.com/user-attachments/assets/e1938e29-37b8-4003-8a4f-82bb806c6b53">
   </li>
   <br>
 
   <li>채팅페이지
     <br>
-    <img width="900" src="https://github.com/user-attachments/assets/3c92d044-6654-4fdf-85d5-cd190a06d578">
-    <img width="900" src="https://github.com/user-attachments/assets/402607fe-0688-49da-bebe-0336f72d8587">
-    <img width="900" src="https://github.com/user-attachments/assets/389a541e-0cab-4a84-a47b-153f8f58ab21">
+    <img width="900" src="https://github.com/user-attachments/assets/8a9acc22-c538-4916-9da1-ddf3545910ce">
+    <img width="900" src="https://github.com/user-attachments/assets/da5ed260-045c-4fe4-afcc-f4b4ea39381d">
   </li>
   <br>
 </ul>
