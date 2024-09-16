@@ -18,9 +18,7 @@ public class ChatMessageService {
     return chatMessageRepository.save(chatMessage);
   }
 
-  // auctionId와 memberId에 맞는 메시지 가져오기
-  public List<ChatMessage> getMessagesByAuctionIdAndMemberId(Long auctionId, Long memberId) {
-      return chatMessageRepository.findMessagesByAuctionIdAndMemberId(auctionId, memberId);
+  public List<ChatMessage> getMessagesByChatRoomId(Long chatRoomId) {
+    return chatMessageRepository.getMessagesByChatRoomId(chatRoomId);
   }
-
 }

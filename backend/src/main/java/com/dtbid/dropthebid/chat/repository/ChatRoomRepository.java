@@ -11,8 +11,6 @@ public interface ChatRoomRepository {
     void save(ChatRoom chatRoom);
 
     ChatRoom findByAuctionIdAndMemberId(Map<String, Object> params);
-
-    ChatRoom findById(long chatRoomId);
     
     List<ChatRoom> findChatRoomsByMemberId(Long memberId);
 

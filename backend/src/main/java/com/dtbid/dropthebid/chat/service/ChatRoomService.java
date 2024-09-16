@@ -14,17 +14,13 @@ public class ChatRoomService {
   
   @Autowired
   private final ChatRoomRepository chatRoomRepository;
-
+  
   public ChatRoom findByAuctionIdAndMemberId(Map<String, Object> params) {
     return chatRoomRepository.findByAuctionIdAndMemberId(params);
   }
 
   public void createChatRoom(ChatRoom newChatRoom) {
     chatRoomRepository.save(newChatRoom);
-  }
-
-  public ChatRoom findById(long chatRoomId) {
-    return chatRoomRepository.findById(chatRoomId);
   }
 
   //사용자 ID로 채팅방 목록 조회

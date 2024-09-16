@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -67,28 +66,19 @@ public class ChatController {
   }
   
   // 사용자 ID로 채팅방 목록 조회
-  @GetMapping("/room/{memberId}")
+  @GetMapping("/rooms/{memberId}")
   public List<ChatRoom> getChatRooms(@PathVariable("memberId") Long memberId) {
       List<ChatRoom> chatRooms = chatRoomService.findChatRoomsByMemberId(memberId);
-      System.out.println("test" + chatRooms);
       return chatRooms;
   }
   
-  //특정 채팅방의 메시지 로드
-  @GetMapping("/room/{chatRoomId}")
-  public ResponseEntity<List<ChatMessage>> getChatMessages(@PathVariable Long chatRoomId) {
-      List<ChatMessage> messages = chatMessageService.getChatMessagesByRoomId(chatRoomId);
-      return ResponseEntity.ok(messages);
+  // 채팅방의 기존 메시지 로드
+  @GetMapping("/messages/{chatRoomId}")
+  public List<ChatMessage> getChatMessages(@PathVariable("chatRoomId") Long chatRoomId) {
+
+      List<ChatMessage> chatMessages = chatMessageService.getMessagesByChatRoomId(chatRoomId);
+      System.out.println("chatMessages" + chatMessages);
+      return chatMessages;
   }
   
-  //채팅방의 기존 메시지 로드
-  @GetMapping("/room/{auctionId}/{memberId}")
-  public ResponseEntity<List<ChatMessage>> getChatMessages(
-          @PathVariable Long auctionId,
-          @PathVariable Long memberId) {
-
-      List<ChatMessage> chatMessages = chatMessageService.getMessagesByAuctionIdAndMemberId(auctionId, memberId);
-      return ResponseEntity.ok(chatMessages);
-
-  }
 }

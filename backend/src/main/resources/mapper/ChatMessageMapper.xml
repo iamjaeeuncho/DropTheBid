@@ -21,22 +21,10 @@
         FROM DUAL
     	</selectKey>
     </insert>
-
-    <select id="findById" parameterType="long" resultType="com.dtbid.dropthebid.chat.model.ChatMessage">
-        SELECT * FROM CHATTING_MESSAGE WHERE CHATTING_MESSAGE_ID = #{chatMessageId}
-    </select>
-    
-    <select id="findByChatRoomId" parameterType="Long" resultType="com.dtbid.dropthebid.chat.model.ChatMessage">
-	    SELECT *
-	    FROM CHATTING_MESSAGE 
-	    WHERE CHATTING_ROOM_ID = #{chatRoomId} 
-	    ORDER BY CREATED_AT ASC
-	</select>
 	
-	<select id="findMessagesByRoomId" resultType="com.example.chat.model.ChatMessage">
-        SELECT chat_message_id, chat_room_id, member_id, message, created_at
-        FROM chat_message
-        WHERE chat_room_id = #{chatRoomId}
-        ORDER BY created_at ASC
-    </select>
+	<select id="getMessagesByChatRoomId" parameterType="long" resultMap="ChatMessageResultMap">
+		SELECT *
+		FROM CHATTING_MESSAGE
+		WHERE CHATTING_ROOM_ID = #{chatRoomId}
+	</select>
 </mapper>
